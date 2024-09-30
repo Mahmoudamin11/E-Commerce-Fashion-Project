@@ -1,77 +1,97 @@
-import { FaRegHeart } from "react-icons/fa";
+import { useEffect, useRef, useState } from "react";
+import { CiHeart } from "react-icons/ci";
 import { GoPerson } from "react-icons/go";
-import { IoIosMenu, IoIosSearch } from "react-icons/io";
+import { IoIosMenu, IoIosSearch, IoIosHeartEmpty  } from "react-icons/io";
 import { PiShoppingCart } from "react-icons/pi";
-import { Link } from "react-router-dom";
-import logo from "../assets/icons/logo.png";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import Search from "./Search";
+import Category from "./Category";
+import { VscMenu } from "react-icons/vsc";
+import PhoneMenu from "./PhoneMenu";
+import { MdClose } from "react-icons/md";
 
-function Navbar() {
+const Navbar = () => {
+  const [showSearch, setShowSearch] = useState(false)
+  const [showCategory, setShowCategory] = useState(false);
+  const [showPhoneMenu, setShowPhoneMenu] = useState(false);
+  const [shownMenuMark, setShownMenuMark] = useState(false); // the mark that will be shown ( X || menu bar )
+  
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'Category', path: '/category' },
+    { name: 'About Us', path: '/aboutUs' },
+    { name: 'Contact Us', path: '/contactUs' }
+  ];
+  
+  const toggleShowSearch = () => { 
+    setShowSearch(!showSearch);
+    setShowPhoneMenu(false);
+    setShownMenuMark(false);
+  }
+  
+  const categoryBtnRef = useRef(null);
+  const categoryDivRef = useRef(null);
+
+  useEffect(() => { 
+    const handleClick = (event) => {
+      if (categoryBtnRef.current &&!categoryBtnRef.current.contains(event.target) && categoryDivRef.current &&!categoryDivRef.current.contains(event.target)) {
+        setShowCategory(false);
+      } else if (categoryBtnRef.current && categoryBtnRef.current.target === event.target) { 
+        setShowCategory(!showCategory);
+      }
+    }
+    document.body.addEventListener('click', handleClick)
+
+    return () => document.body.removeEventListener('click', handleClick);
+  }, [])
+  
+  const toggleShowPhoneMenu = () => { 
+    setShowPhoneMenu(!showPhoneMenu);
+    const timer = setTimeout(() => { 
+      setShownMenuMark(!shownMenuMark);
+    }, 320);
+    return () => clearTimeout(timer);
+  } 
+
+  const toggleShowCategory = () => {
+    setShowCategory(!showCategory);
+  };
+  
+
   return (
-    <nav className="flex justify-between items-center bg-gray-100 p-8">
-      <Link className="flex items-center space-x-3 rtl:space-x-reverse">
-        <img src={logo} className="h-8" alt="Logo" />
-      </Link>
+    <>
+      <div className="flex sticky top-0  z-[100] bg-[#F8F8F8] items-center w-full px-6 py-4 md:px-10 md:py-[38px] h-[90px] md:h-[108px] justify-between">
+        {showSearch ? <Search toggleShowSearch={toggleShowSearch} /> 
+        : <>
+            <NavLink to={'/'} className="font-bold relative text-2xl cursor-pointer">
+              Logo
+            </NavLink>
+            <ul className="hidden md:flex gap-6 items-center">
+              <NavLink to={'/'} className={({isActive}) => ` ${isActive && !showCategory ? 'font-bold' : 'font-normal text-gray-700 hover:text-black'} trans  `}>Home</NavLink>
+              <button ref={categoryBtnRef} onClick={toggleShowCategory} className={` ${showCategory ? 'font-bold' : 'font-normal text-gray-700 hover:text-black'} trans outline-0`}>Category</button>
+              <NavLink to={'/aboutUs'} className={({isActive}) => ` ${isActive && !showCategory ? 'font-bold' : 'font-normal text-gray-700 hover:text-black'} trans  `}>About Us</NavLink>
+              <NavLink to={'/contactUs'} className={({isActive}) => ` ${isActive && !showCategory ? 'font-bold' : 'font-normal text-gray-700 hover:text-black'} trans  `}>Contact Us</NavLink>
+            </ul>
 
-      <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-        <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border rounded-lg  md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0  dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-          <li>
-            <a
-              href="#"
-              className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-gray-950 md:p-0 dark:text-white md:dark:text-blue-500"
-              aria-current="page"
-            >
-              Home
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-            >
-              About
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-            >
-              Services
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-            >
-              Pricing
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-            >
-              Contact
-            </a>
-          </li>
-        </ul>
+            <ul className="gap-6 items-center hidden sm:flex">
+              <IoIosSearch onClick={toggleShowSearch} size={22} className={`cursor-pointer`} />
+              <CiHeart size={22} className="cursor-pointer" />
+              <GoPerson size={22} className="cursor-pointer" />
+              <PiShoppingCart size={22} className="cursor-pointer" />
+            </ul>
+            <div className="flex gap-6 items-center  md:hidden">
+              <IoIosSearch onClick={toggleShowSearch} size={22} className={`cursor-pointer sm:hidden`} />
+              {!shownMenuMark && <VscMenu onClick={toggleShowPhoneMenu} size={22} className={`cursor-pointer trans ${showPhoneMenu ? "rotate-180 duration-700" : "rotate-0"}`} />}
+              {shownMenuMark && <MdClose onClick={toggleShowPhoneMenu} size={22} className={`cursor-pointer trans ${showPhoneMenu ? "rotate-0" : "-rotate-180 duration-700"}`} />}
+            </div>
+        </>}
       </div>
-      <div className="flex items-center space-x-6">
-        <IoIosSearch />
-        <FaRegHeart />
-        <GoPerson />
-        <PiShoppingCart />
+      <div ref={categoryDivRef}>
+        <Category showCategory={showCategory} toggleShowCategory={toggleShowCategory} />
       </div>
-      <button
-        data-collapse-toggle="navbar-default"
-        type="button"
-        className="inline-flex items-center p-2 text-2xl justify-center  text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-      >
-        <IoIosMenu />
-      </button>
-    </nav>
-  );
+      <PhoneMenu showPhoneMenu={showPhoneMenu} toggleShowPhoneMenu={toggleShowPhoneMenu} />
+    </>
+  )
 }
 
-export default Navbar;
+export default Navbar
