@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
 * {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -11,10 +13,10 @@ body {
   font-family: "Inter", sans-serif;
   color: var(--text-black);
 }
-ul {
+/* ul {
   list-style: none;
   padding: 0;
-}
+} */
 ::-webkit-scrollbar {
   width: 12px;
 }
@@ -38,4 +40,11 @@ a {
   padding-left: 20px;
   padding-right: 20px;
   margin: 0 auto;
+}
+
+@layer base { 
+  /* Transition smoothly class */
+  .trans { 
+    @apply transition-all duration-300 ;
+  }
 }
