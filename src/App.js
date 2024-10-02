@@ -2,6 +2,8 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Home from "./Pages/Home";
+import Popup from "./utilities/PopUp";
 function App() {
   return (
     <div className="App">
@@ -10,10 +12,11 @@ function App() {
         <Route
           path="/"
           element={
-            <h className="flex justify-center text-3xl font-bold">Home Page</h>
+            <Home />
           }
         />
       </Routes>
+      <Popup />
       <Footer />
     </div>
   );
