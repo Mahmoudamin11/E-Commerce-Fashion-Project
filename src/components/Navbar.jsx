@@ -15,13 +15,7 @@ const Navbar = () => {
   const [showCategory, setShowCategory] = useState(false);
   const [showPhoneMenu, setShowPhoneMenu] = useState(false);
   const [shownMenuMark, setShownMenuMark] = useState(false); // the mark that will be shown ( X || menu bar )
-  
-  const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'Category', path: '/category' },
-    { name: 'About Us', path: '/aboutUs' },
-    { name: 'Contact Us', path: '/contactUs' }
-  ];
+  const location = useLocation();
   
   const toggleShowSearch = () => { 
     setShowSearch(!showSearch);
@@ -35,7 +29,7 @@ const Navbar = () => {
   useEffect(() => { 
     const handleClick = (event) => {
       if (categoryBtnRef.current &&!categoryBtnRef.current.contains(event.target) && categoryDivRef.current &&!categoryDivRef.current.contains(event.target)) {
-        setShowCategory(false);
+        setShowCategory(false); // close category
       } else if (categoryBtnRef.current && categoryBtnRef.current.target === event.target) { 
         setShowCategory(!showCategory);
       }
@@ -56,11 +50,37 @@ const Navbar = () => {
   const toggleShowCategory = () => {
     setShowCategory(!showCategory);
   };
+
+
+  
+    const womensCategoryData = [
+        {title: 'New', link: '/womensNew', id: 1},
+        {title: 'Dresses', link: '/womensDresses', id: 2},
+        {title: 'Shirts & Blouses', link: '/womensShirts&Blouses', id: 3},
+        {title: 'Trousers', link: '/womensTrousers', id: 4},
+        {title: 'Jackets & Coats', link: '/womensJackets&Coats', id: 5},
+        {title: 'Shoes', link: '/womensShoes', id: 6},
+        {title: 'Accessories', link: '/womensAccessories', id: 7},
+    ]
+    const mensCategoryData = [
+        {title: 'New', link: '/mensNew', id: 1},
+        {title: 'T-shirts & Tanks', link: '/mensT-shirts&Tanks', id: 2},
+        {title: 'Trousers', link: '/mensTrousers', id: 3},
+        {title: 'Jackets & Coats', link: '/mensJackets&Coats', id: 4},
+        {title: 'Shoes', link: '/mensShoes', id: 5},
+        {title: 'Accessories', link: '/mensAccessories', id: 6},
+    ]
+    const childrenCategoryData = [
+        {title: 'New', link: '/childrenNew', id: 1},
+        {title: 'Clothing', link: '/childrenClothing', id: 2},
+        {title: 'Shoes', link: '/childrenShoes', id: 3},
+        {title: 'Accessories', link: '/childrenAccessories', id: 4},
+    ]
   
 
   return (
     <>
-      <div className="flex sticky top-0  z-[100] bg-[#F8F8F8] items-center w-full px-6 py-4 md:px-10 md:py-[38px] h-[90px] md:h-[108px] justify-between">
+      <div className="flex sticky top-0 shadow-sm  z-[100] bg-[#F8F8F8] items-center w-full px-6 py-2 md:px-10 md:py-[20px] h-[74px] md:h-[74px] justify-between">
         {showSearch ? <Search toggleShowSearch={toggleShowSearch} /> 
         : <>
             <NavLink to={'/'} className="font-bold relative text-2xl cursor-pointer">
@@ -68,7 +88,7 @@ const Navbar = () => {
             </NavLink>
             <ul className="hidden md:flex gap-6 items-center">
               <NavLink to={'/'} className={({isActive}) => ` ${isActive && !showCategory ? 'font-bold' : 'font-normal text-gray-700 hover:text-black'} trans  `}>Home</NavLink>
-              <button ref={categoryBtnRef} onClick={toggleShowCategory} className={` ${showCategory ? 'font-bold' : 'font-normal text-gray-700 hover:text-black'} trans outline-0`}>Category</button>
+              <button ref={categoryBtnRef} onClick={toggleShowCategory} className={` ${showCategory || (location.pathname !== '/' && location.pathname !== '/aboutUs' && location.pathname !== '/contactUs') ? 'font-bold' : 'font-normal text-gray-700 hover:text-black'} trans outline-0`}>Category</button>
               <NavLink to={'/aboutUs'} className={({isActive}) => ` ${isActive && !showCategory ? 'font-bold' : 'font-normal text-gray-700 hover:text-black'} trans  `}>About Us</NavLink>
               <NavLink to={'/contactUs'} className={({isActive}) => ` ${isActive && !showCategory ? 'font-bold' : 'font-normal text-gray-700 hover:text-black'} trans  `}>Contact Us</NavLink>
             </ul>
@@ -86,10 +106,11 @@ const Navbar = () => {
             </div>
         </>}
       </div>
-      <div ref={categoryDivRef}>
-        <Category showCategory={showCategory} toggleShowCategory={toggleShowCategory} />
+      <div ref={categoryDivRef} className="hidden sm:block">
+        <Category showCategory={showCategory} toggleShowCategory={toggleShowCategory} womens={womensCategoryData} mens={mensCategoryData} children={childrenCategoryData} />
       </div>
-      <PhoneMenu showPhoneMenu={showPhoneMenu} toggleShowPhoneMenu={toggleShowPhoneMenu} />
+      
+      <PhoneMenu showPhoneMenu={showPhoneMenu} toggleShowPhoneMenu={toggleShowPhoneMenu} womens={womensCategoryData} mens={mensCategoryData} children={childrenCategoryData} />
     </>
   )
 }

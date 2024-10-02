@@ -113,9 +113,9 @@ function Products() {
   ];
   return (
     <div className="products py-10 container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8  max-sm:gap-4 max-sm:flex max-sm:flex-col max-sm:items-center">
-      {products.map((product) => (
-        <div className="product">
-          <div class="image-container relative">
+      {products.map((product , index) => (
+        <div key={index} className="product">
+          <div className="image-container relative">
             <img src={product.img} alt="" className="rounded-lg" />
             <div className="icon-container flex gap-2">
               <Link to="/cart">
@@ -136,8 +136,8 @@ function Products() {
             {product.price}
           </p>
           <div className="colors flex gap-4 mb-8">
-            {product.colors.map((color) => (
-              <img src={color} alt="" className="rounded-full w-8 h-8 mt-2" />
+            {product.colors.map((color , index) => (
+              <img key={index} src={color} alt="" className="rounded-full w-8 h-8 mt-2" />
             ))}
           </div>
         </div>

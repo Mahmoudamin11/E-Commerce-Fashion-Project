@@ -13,12 +13,9 @@ body {
   font-family: "Inter", sans-serif;
   color: var(--text-black);
 }
-/* ul {
+ul {
   list-style: none;
   padding: 0;
-} */
-::-webkit-scrollbar {
-  width: 12px;
 }
 ::-webkit-scrollbar {
   width: 6px;
@@ -27,7 +24,7 @@ body {
   background-color: #222222;
 }
 ::-webkit-scrollbar-track {
-  background-color: lightg;
+  background-color: lightgray;
 }
 a {
   text-decoration: none;
@@ -45,5 +42,11 @@ a {
   /* Transition smoothly class */
   .trans { 
     @apply transition-all duration-300 ;
+  }
+  .spaceX { 
+    @apply mx-2 sm:mx-10 md:mx-20;
+  }
+  .spaceT { 
+    @apply mt-20;
   }
 }
