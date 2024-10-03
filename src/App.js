@@ -6,6 +6,9 @@ import Home from "./Pages/Home";
 import Popup from "./utilities/PopUp";
 import ContactUs from "./Pages/ContactUs";
 import NotFound from "./Pages/NotFound";
+import Cart from "./Pages/Cart/Cart";
+import Checkout from "./Pages/Checkout/Checkout";
+import Payment from "./Pages/Payment/Payment";
 function App() {
   return (
     <div className="App">
@@ -14,6 +17,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/contactUs" element={<ContactUs />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/cart/checkout" element={<Checkout />} />
+        <Route path="/cart/checkout/payment" element={<Payment />} />
       </Routes>
       <Popup />
       <Footer />

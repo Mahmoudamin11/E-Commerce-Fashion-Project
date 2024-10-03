@@ -97,7 +97,7 @@ const Navbar = () => {
               <IoIosSearch onClick={toggleShowSearch} size={22} className={`cursor-pointer`} />
               <CiHeart size={22} className="cursor-pointer" />
               <GoPerson size={22} className="cursor-pointer" />
-              <PiShoppingCart size={22} className="cursor-pointer" />
+              <NavLink to={'/cart'}> <PiShoppingCart size={22} className="cursor-pointer" /></NavLink>
             </ul>
             <div className="flex gap-6 items-center  md:hidden">
               <IoIosSearch onClick={toggleShowSearch} size={22} className={`cursor-pointer sm:hidden`} />
