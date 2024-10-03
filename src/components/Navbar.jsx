@@ -9,8 +9,14 @@ import Category from "./Category";
 import { VscMenu } from "react-icons/vsc";
 import PhoneMenu from "./PhoneMenu";
 import { MdClose } from "react-icons/md";
+import Login from "../Pages/login/Login";
 
 const Navbar = () => {
+  const[showLogin,setShowLogin]=useState(false)
+
+const toggelelogin = () => {
+  setShowLogin(!showLogin)
+}
   const [showSearch, setShowSearch] = useState(false)
   const [showCategory, setShowCategory] = useState(false);
   const [showPhoneMenu, setShowPhoneMenu] = useState(false);
@@ -95,9 +101,16 @@ const Navbar = () => {
 
             <ul className="gap-6 items-center hidden sm:flex">
               <IoIosSearch onClick={toggleShowSearch} size={22} className={`cursor-pointer`} />
+
               <CiHeart size={22} className="cursor-pointer" />
               <GoPerson size={22} className="cursor-pointer" />
               <NavLink to={'/cart'}> <PiShoppingCart size={22} className="cursor-pointer" /></NavLink>
+
+            <NavLink to={'/wishlist'} className={({isActive}) => ` ${isActive && !showCategory ? 'font-bold' : 'font-normal text-gray-700 hover:text-black'} trans  `}><CiHeart size={22} className="cursor-pointer"/></NavLink>
+              <button type="button" onClick={toggelelogin}><GoPerson size={22} className="cursor-pointer" /></button>
+              {showLogin && <Login />}
+              <PiShoppingCart size={22} className="cursor-pointer" />
+
             </ul>
             <div className="flex gap-6 items-center  md:hidden">
               <IoIosSearch onClick={toggleShowSearch} size={22} className={`cursor-pointer sm:hidden`} />
