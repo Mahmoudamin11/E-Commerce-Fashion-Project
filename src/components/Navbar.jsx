@@ -4,8 +4,16 @@ import { IoIosMenu, IoIosSearch } from "react-icons/io";
 import { PiShoppingCart } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import logo from "../assets/icons/logo.png";
+import { useState } from "react";
+import Login from "../Pages/login/Login";
 
 function Navbar() {
+const[showLogin,setShowLogin]=useState(false)
+
+const toggelelogin = () => {
+  setShowLogin(!showLogin)
+}
+
   return (
     <nav className="flex justify-between items-center bg-gray-100 p-8">
       <Link className="flex items-center space-x-3 rtl:space-x-reverse">
@@ -57,10 +65,11 @@ function Navbar() {
           </li>
         </ul>
       </div>
-      <div className="flex items-center space-x-6">
+      <div className="flex items-center gap-6">
         <IoIosSearch />
-        <FaRegHeart />
-        <GoPerson />
+       <Link to="/wishlist"><FaRegHeart /></Link>
+       <button type="button" className="cursor-pointer" onClick={toggelelogin}><GoPerson /></button>
+       {showLogin && <Login />}
         <PiShoppingCart />
       </div>
       <button
