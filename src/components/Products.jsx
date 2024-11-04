@@ -18,6 +18,7 @@ function Products() {
       ],
       category: "women's",
       size: ["S", "M", "L", "XL", "XXL"],
+      
     },
     {
       img: product,
