@@ -12,10 +12,13 @@ import Checkout from "./Pages/Checkout/Checkout";
 import Payment from "./Pages/Payment/Payment";
 
 import Wishlist from "./Pages/wishlist/Wishlist";
+import { Toaster } from "react-hot-toast";
+import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 
 function App() {
   return (
     <div className="App">
+      <Toaster />
       <Navbar />
       <Popup />
       <Routes>
@@ -28,6 +31,7 @@ function App() {
         <Route path="/cart/checkout/payment" element={<Payment />} />
 
         <Route path="/wishlist" element={<Wishlist/>} />
+        <Route path="/resetpassword" element={<ResetPassword/>} />
 
       </Routes>
       <Popup />
