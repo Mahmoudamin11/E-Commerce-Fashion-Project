@@ -1,11 +1,18 @@
-import aboutUS from "../../assets/images//About US/AboutUS.png";
+import aboutUS from "../../assets/images//About US/AboutUS.jpg";
 import Brands from "../../components/Brands";
 
 const AboutUS = () => {
   return (
     <div className="aboutUs">
       {/* Hero Section */}
-      <img src={aboutUS} className="w-full h-[445px] mb-14" alt="" />
+      <div className="relative w-full h-[445px] mb-14">
+        <img src={aboutUS} className="w-full h-full" alt="" />
+        <div className="absolute inset-0 bg-black opacity-50"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+          <h3 className="text-5xl font-bold text-white">About Us</h3>
+        </div>
+      </div>
+
       {/* Brands Section */}
       <Brands />
       {/* Our Story Section */}
