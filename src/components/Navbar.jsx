@@ -9,7 +9,7 @@ import Category from "./Category";
 import { VscMenu } from "react-icons/vsc";
 import PhoneMenu from "./PhoneMenu";
 import { MdClose } from "react-icons/md";
-import Login from "../Pages/login/Login";
+import Login from "../assets/icons/logo.png";
 
 const Navbar = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -96,11 +96,12 @@ const Navbar = () => {
           <Search toggleShowSearch={toggleShowSearch} />
         ) : (
           <>
+            {/* Logo */}
             <NavLink
               to={"/"}
               className="font-bold relative text-2xl cursor-pointer"
             >
-              Logo
+              <img src={Login} className="w-[60px]" alt="" />
             </NavLink>
             <ul className="hidden md:flex gap-6 items-center">
               <NavLink
