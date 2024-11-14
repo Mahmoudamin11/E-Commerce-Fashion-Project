@@ -5,6 +5,7 @@ import { IoIosSearch } from "react-icons/io";
 import { MdClose } from "react-icons/md";
 import { PiShoppingCart } from "react-icons/pi";
 import { VscMenu } from "react-icons/vsc";
+
 import { useDispatch } from "react-redux";
 import { NavLink, useLocation } from "react-router-dom";
 import Login from "../Pages/login/Login";
@@ -13,6 +14,12 @@ import { fetchAllSubcategories } from "../Redux Toolkit/slices/subcategoriesForE
 import Category from "./CategoryNav";
 import PhoneMenu from "./PhoneMenu";
 import Search from "./Search";
+
+
+import { MdClose } from "react-icons/md";
+import Logo from "../assets/icons/logo.png";
+import Login from '../Pages/login/Login'
+
 
 const Navbar = memo(() => {
   const [showLogin, setShowLogin] = useState(false);
@@ -93,11 +100,12 @@ const Navbar = memo(() => {
           <Search toggleShowSearch={toggleShowSearch} />
         ) : (
           <>
+            {/* Logo */}
             <NavLink
               to={"/"}
               className="font-bold relative text-2xl cursor-pointer"
             >
-              Logo
+              <img src={Logo} className="w-[60px]" alt="" />
             </NavLink>
             <ul className="hidden md:flex gap-6 items-center">
               <NavLink

@@ -14,12 +14,29 @@ const Wishlist = React.lazy(() => import("./Pages/wishlist/Wishlist"));
 const NotFound = React.lazy(() => import("./Pages/NotFound"));
 const Category = React.lazy(() => import("./Pages/Cateogries/Category"));
 
+import AboutUS from "./Pages/About US/AboutUS";
+import { Toaster } from "react-hot-toast";
+import ResetPassword from "./Pages/ResetPassword/ResetPassword";
+
 function App() {
+
   const [showPopup, setShowPopup] = useState(false);
 
   const closePopup = () => {
       setShowPopup(false);
   };
+
+  return (
+    <div className="App">
+      <Toaster />
+      <Navbar />
+      <Popup />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/contactUs" element={<ContactUs />} />
+        <Route path="*" element={<NotFound />} />
+        <Route path="/aboutUS" element={<AboutUS />} />
+
 
   useEffect(() => {
       const timer = setTimeout(() => {
@@ -27,6 +44,7 @@ function App() {
       }, 5000);
       return () => clearTimeout(timer);
   }, []);
+
 
   const RoutesMemoized = React.useMemo(() => (
     <Routes>
@@ -50,6 +68,13 @@ function App() {
         {showPopup && <Popup closePopup={closePopup} />}
         <Footer />
       </Suspense>
+
+        <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/resetpassword" element={<ResetPassword />} />
+      </Routes>
+      <Popup />
+      <Footer />
+
     </div>
   );
 }

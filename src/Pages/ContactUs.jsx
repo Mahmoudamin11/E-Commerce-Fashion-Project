@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { FiPhone } from "react-icons/fi";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
@@ -9,7 +9,36 @@ import {
   FaWhatsapp,
   FaYoutube,
 } from "react-icons/fa";
+import { API } from "../Api/Api";
+import axios from "axios";
 const ContactUs = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+  console.log(formData);
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "https://ecommerce-dot-code.vercel.app/api/contact",
+        formData
+      );
+      console.log(response);
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data); // عرض بيانات الخطأ الواردة من الخادم
+      } else {
+        console.log("There was an error", error.message); // إذا كانت هناك مشكلة في الاتصال بالخادم
+      }
+    }
+  };
   return (
     <div className="container mx-auto p-8">
       <h1 className="text-2xl font-bold mb-6 border-b border-gray-300 pb-4">
@@ -19,7 +48,7 @@ const ContactUs = () => {
         {/* Form Section */}
         <div>
           <h2 className="text-xl font-semibold mb-6">Send Your Question</h2>
-          <form>
+          <form onSubmit={handleFormSubmit}>
             <div className="mb-4">
               <label className="block font-semibold mb-2" htmlFor="name">
                 Your Name
@@ -29,6 +58,9 @@ const ContactUs = () => {
                 type="text"
                 id="name"
                 placeholder="Your Name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
               />
             </div>
             <div className="mb-4">
@@ -40,6 +72,9 @@ const ContactUs = () => {
                 type="email"
                 id="email"
                 placeholder="Your Email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
               />
             </div>
             <div className="mb-4">
@@ -51,9 +86,15 @@ const ContactUs = () => {
                 id="message"
                 rows="4"
                 placeholder="Your Message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
               ></textarea>
             </div>
-            <button className="bg-black text-white px-6 py-2 rounded">
+            <button
+              type="submit"
+              className="bg-black text-white px-6 py-2 rounded"
+            >
               Send
             </button>
           </form>
@@ -63,30 +104,25 @@ const ContactUs = () => {
         <div>
           <h2 className="text-xl font-semibold mb-3">Address</h2>
           <p className="text-[#8E8E90]">
-            <FaLocationDot className="inline w-4 h-5 mr-1 text-[black]" /> 725
-            5th Ave, New York, NY 10022, USA
+            <FaLocationDot className="inline w-4 h-5 mr-1 text-[black]" /> Egypt
+            , Dakahlia, Mansoura
           </p>
 
           <h3 className="text-lg font-semibold mt-6 mb-3">Phones</h3>
           <p className="mb-3 text-[#8E8E90]">
-            <FiPhone className="inline w-5 h-5 mr-1 text-[black]" />{" "}
-            712-339-2194
-          </p>
-          <p className="mb-2 text-[#8E8E90]">
-            <FiPhone className="inline w-5 h-5 mr-1 text-[black]" />{" "}
-            712-339-2194
+            <FiPhone className="inline w-5 h-5 mr-1 text-[black]" /> 01147290516
           </p>
 
           <h3 className="text-lg font-semibold mt-6 mb-2">Email</h3>
           <p className="text-[#8E8E90] ">
             <MdEmail className="inline w-5 h-5 mr-1 text-[black]" />{" "}
-            info@qode-theme.com
+            dotcode16@gmail.com
           </p>
 
           <h3 className="text-lg font-semibold mt-6 mb-2">Working Hours</h3>
           <p className="text-[#8E8E90]">
-            <FaRegClock className="inline w-5 h-5 mr-1 text-[black]" /> Mon-Fri:
-            10:00 - 18:00
+            <FaRegClock className="inline w-5 h-5 mr-1 text-[black]" /> Sat-Thu:
+            10:00 - 20:00
           </p>
 
           <h3 className="text-lg font-semibold mt-6 mb-2">Follow Us</h3>
