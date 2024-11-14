@@ -1,11 +1,13 @@
-import HeroSlider from "../components/HeroSlider";
-import SeasonCollection from "../components/SeasonCollection";
-import Products from "../components/Products";
 import { Link } from "react-router-dom";
-import Offers from "../components/Offers";
 import Brands from "../components/Brands";
 import BtnLoad from "../components/BtnLoad";
-function Home() {
+import HeroSlider from "../components/HeroSlider";
+import Offers from "../components/Offers";
+import Products from "../components/Products";
+import SeasonCollection from "../components/SeasonCollection";
+import { memo } from "react";
+const Home = memo(() => {
+  
   return (
     <div className="home">
       <HeroSlider />
@@ -36,6 +38,6 @@ function Home() {
       <Brands />
     </div>
   );
-}
+})
 
 export default Home;

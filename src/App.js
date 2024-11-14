@@ -1,23 +1,31 @@
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import Home from "./Pages/Home";
-import Popup from "./utilities/PopUp";
-import ContactUs from "./Pages/ContactUs";
-import NotFound from "./Pages/NotFound";
-
-import Cart from "./Pages/Cart/Cart";
-import Checkout from "./Pages/Checkout/Checkout";
-import Payment from "./Pages/Payment/Payment";
-
-import Wishlist from "./Pages/wishlist/Wishlist";
+import Navbar from "./components/Navbar";
+import Popup from './utilities/PopUp';
+import React, { Suspense, useEffect, useState } from "react";
+import LoadingSpinner from "./utilities/LoadingSpinner";
+const Home = React.lazy(() => import("./Pages/Home"));
+const ContactUs = React.lazy(() => import("./Pages/ContactUs"));
+const Cart = React.lazy(() => import("./Pages/Cart/Cart"));
+const Checkout = React.lazy(() => import("./Pages/Checkout/Checkout"));
+const Payment = React.lazy(() => import("./Pages/Payment/Payment"));
+const Wishlist = React.lazy(() => import("./Pages/wishlist/Wishlist"));
+const NotFound = React.lazy(() => import("./Pages/NotFound"));
+const Category = React.lazy(() => import("./Pages/Cateogries/Category"));
 
 import AboutUS from "./Pages/About US/AboutUS";
 import { Toaster } from "react-hot-toast";
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 
 function App() {
+
+  const [showPopup, setShowPopup] = useState(false);
+
+  const closePopup = () => {
+      setShowPopup(false);
+  };
+
   return (
     <div className="App">
       <Toaster />
@@ -29,16 +37,46 @@ function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="/aboutUS" element={<AboutUS />} />
 
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/cart/checkout" element={<Checkout />} />
-        <Route path="/cart/checkout/payment" element={<Payment />} />
+
+  useEffect(() => {
+      const timer = setTimeout(() => {
+          setShowPopup(true);
+      }, 5000);
+      return () => clearTimeout(timer);
+  }, []);
+
+
+  const RoutesMemoized = React.useMemo(() => (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/contactUs" element={<ContactUs />} />
+      <Route path="*" element={<NotFound />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/cart/checkout" element={<Checkout />} />
+      <Route path="/cart/checkout/payment" element={<Payment />} />
+      <Route path="/wishlist" element={<Wishlist />} />
+      // subcategory route
+      <Route path="/:categoryName/:subcategoryID?" element={<Category />} />
+    </Routes>
+  ), []);
+
+  return (
+    <div className="App">
+      <Suspense fallback={<div className="w-full h-screen flex items-center justify-center"><LoadingSpinner /></div>}>
+        <Navbar />
+        {RoutesMemoized}
+        {showPopup && <Popup closePopup={closePopup} />}
+        <Footer />
+      </Suspense>
 
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
       </Routes>
       <Popup />
       <Footer />
+
     </div>
   );
 }
+
 export default App;

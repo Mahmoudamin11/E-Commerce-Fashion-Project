@@ -8,7 +8,7 @@ const HeroSlider = () => {
     // preloading
     useEffect(() => {
         const images = [
-            '/heroSlider/men.png','/heroSlider/women.png','/heroSlider/children.png'
+            '/heroSlider/men.webp','/heroSlider/women.webp','/heroSlider/children.webp'
         ];
         images.forEach(image => {
             const img = new Image();
@@ -37,29 +37,27 @@ const HeroSlider = () => {
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
         >
             {/* Render each image */}
-            {/* {images.map((image, index) => ( */}
             <div  className="w-full max-h-full flex-shrink-0 relative overflow-y-hidden">
                 <img
-                    src={'/heroSlider/men.png'}
+                    src={'/heroSlider/men.webp'}
                     alt={`Slide ${"image1"}`}
                     className={`h-full object-cover w-full`}
                 />
             </div>
             <div  className="w-full max-h-full flex-shrink-0 relative overflow-y-hidden">
                 <img
-                    src={'/heroSlider/women.png'}
+                    src={'/heroSlider/women.webp'}
                     alt={`Slide ${"image2"}`}
                     className={`h-full object-cover w-full`}
                 />
             </div>
             <div  className="w-full max-h-full flex-shrink-0 relative overflow-y-hidden">
                 <img
-                    src={'/heroSlider/children.png'}
+                    src={'/heroSlider/children.webp'}
                     alt={`Slide ${"image3"}`}
                     className={`h-full object-cover mx-auto`}
                 />
             </div>
-            {/* ))} */}
         </div>
 
         <div className=" absolute flex flex-col justify-center items-center gap-8 top-0 left-0 bg-black/[33%] w-full h-full max-h-[680px] md:max-h-[622px] z-20">
@@ -72,7 +70,7 @@ const HeroSlider = () => {
         </div>
 
         {/* Navigation Dots */}
-        <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex items-center space-x-3 z-50">
+        <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex items-center space-x-3 z-30">
             {[1,2,3].map((_, index) => (
             <div
                 key={index}
