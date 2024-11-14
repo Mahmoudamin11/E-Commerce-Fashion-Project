@@ -2,7 +2,7 @@ import { memo, useEffect, useState } from 'react'
 import { CiHeart } from 'react-icons/ci'
 import { GoPerson } from 'react-icons/go'
 import { PiShoppingCart } from 'react-icons/pi'
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import {  NavLink } from 'react-router-dom'
 import { FaAngleDown } from "react-icons/fa6";
 
 const PhoneMenu = memo(({showPhoneMenu, toggleShowPhoneMenu , womens, mens, children}) => {
@@ -11,7 +11,6 @@ const PhoneMenu = memo(({showPhoneMenu, toggleShowPhoneMenu , womens, mens, chil
     const [showWomens, setShowWomens] = useState(false)
     const [showMens, setShowMens] = useState(false)
     const [showChildren, setShowChildren] = useState(false);
-    const location = useLocation();
 
     useEffect(() => {
         // Disable page scroll when PhoneMenu is open
