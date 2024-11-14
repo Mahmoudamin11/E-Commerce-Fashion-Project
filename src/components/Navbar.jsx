@@ -10,10 +10,13 @@ import { VscMenu } from "react-icons/vsc";
 import PhoneMenu from "./PhoneMenu";
 import { MdClose } from "react-icons/md";
 import Logo from "../assets/icons/logo.png";
-import Login from '../Pages/login/Login'
-
+import Login from '../Auth/login/Login';
+import Cookies from 'js-cookie';
+import { FiLogOut } from "react-icons/fi";
 const Navbar = () => {
   const [showLogin, setShowLogin] = useState(false);
+
+  const token = Cookies.get('token');
 
   const toggelelogin = () => {
     setShowLogin(!showLogin);
@@ -30,6 +33,11 @@ const Navbar = () => {
     setShownMenuMark(false);
   };
 
+
+    const logout = ()=>{
+      Cookies.remove('token')
+      window.location.reload()
+    }
   const categoryBtnRef = useRef(null);
   const categoryDivRef = useRef(null);
 
@@ -181,9 +189,8 @@ const Navbar = () => {
               >
                 <CiHeart size={22} className="cursor-pointer" />
               </NavLink>
-              <button type="button" onClick={toggelelogin}>
-                <GoPerson size={22} className="cursor-pointer" />
-              </button>
+              {token? <button type="button" onClick={logout}><FiLogOut size={22} className="cursor-pointer" /></button>:<button type="button" onClick={toggelelogin}><GoPerson size={22} className="cursor-pointer" /> </button>}
+              
               {showLogin && <Login />}
             </ul>
             <div className="flex gap-6 items-center  md:hidden">

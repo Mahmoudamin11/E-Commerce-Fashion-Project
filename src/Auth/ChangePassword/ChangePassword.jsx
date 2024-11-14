@@ -14,7 +14,7 @@ export default function ResetPassword() {
 
     const validationSchema = yup.object({
         email: yup.string().email("write avalid email").required("email is required"),
-        newPassword: yup.string().required("newPassword is required").matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,'Minimum eight characters, at least one letter and one number'),
+        newPassword: yup.string().required("newPassword is required").matches(/^[A-Z][A-Za-z\d]{7,}$/,'Min 8 chars, starting with a capital letter'),
     })
     async function newPassword(values){
       let id;
@@ -67,14 +67,14 @@ export default function ResetPassword() {
                         <h3 className='text-2xl font-bold '>change password</h3>
                         <div className='my-4'>
                             <input value={formik.values.email} onChange={formik.handleChange} onBlur={formik.handleBlur} type="email" name='email' placeholder='Email' className='w-full border-2 p-2 rounded' />
-                            {formik.errors.email && formik.touched.email ? (<div className='text-red-600 mt-1 font-semibold'>* {formik.errors.email}</div>):('')}
+                            {formik.errors.email && formik.touched.email ? (<div className='text-red-600 mt-1 font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded'> {formik.errors.email}</div>):('')}
                         </div>
                         <div className='mb-4'>
                             <input value={formik.values.newPassword} onChange={formik.handleChange} onBlur={formik.handleBlur} type="password" name='newPassword' placeholder='newPassword' className='w-full border-2 p-2 rounded' />
                             {formik.errors.newPassword && formik.touched.newPassword ? (<div className='text-red-600 mt-1 font-semibold'>* {formik.errors.newPassword}</div>):('')}
                         </div>
 
-                        {errorMsg && <div className='text-red-600 my-1 font-semibold'>* {errorMsg}</div>}
+                        {errorMsg && <div className='text-red-600 my-1 font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded'>* {errorMsg}</div>}
 
                       
                         <div>

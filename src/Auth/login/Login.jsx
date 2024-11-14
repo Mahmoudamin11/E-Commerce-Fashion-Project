@@ -9,12 +9,14 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import {API} from '../../Api/Api';
 import Cookies from 'js-cookie';
-import ForgetPass from '../ForgetPass/ForgetPass';
+import ForgetPass from '../../Auth/ForgetPass/ForgetPass';
+import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 
 export default function Login() {
     const [isLoginVisible, setIsLoginVisible] = useState(true);
     const [showSignup, setShowSignup] = useState(false);
     const [showForgetPass, setShowForgetPass] = useState(false);
+    const [passType, setpassType] = useState("password")
     const [errorMsg,seterrorMsg]= useState(null)
     const navigate = useNavigate();
 
@@ -29,6 +31,10 @@ export default function Login() {
         setIsLoginVisible(false);
         setShowForgetPass(false);
     };
+    const handelPassword =(e)=>{
+      setpassType((prevType) => (prevType === "password" ? "text" : "password"));
+
+     }
 
     const handleShowForgetPass =()=>{
       setShowForgetPass(true);
@@ -38,7 +44,7 @@ export default function Login() {
 
     const validationSchema = yup.object({
           email: yup.string().email("write avalid email").required("email is required"),
-          password: yup.string().required("password is required").matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,'Minimum eight characters, at least one letter and one number'),
+          password: yup.string().required("password is required").matches(/^[A-Z][A-Za-z\d]{7,}$/,'Min 8 chars, starting with a capital letter'),
       })
       async function sendDataregastir(values){
         let id;
@@ -59,6 +65,8 @@ export default function Login() {
       
         toast.dismiss(id)
         toast.success('User logged in successfully')
+        console.log(data);
+        
         const token = data.token;
         Cookies.set("token", token, { expires: 7 });
         
@@ -96,18 +104,22 @@ export default function Login() {
                         <p className='my-4'>Please enter your email and password</p>
                         <div className='my-4'>
                             <input value={formik.values.email} onChange={formik.handleChange} onBlur={formik.handleBlur} type="email" name='email' placeholder='Email' className='w-full border-2 p-2 rounded' />
-                            {formik.errors.email && formik.touched.email ? (<div className='text-red-600 mt-1 font-semibold'>* {formik.errors.email}</div>):('')}
+                            {formik.errors.email && formik.touched.email ? (<div className='text-red-600 mt-1 font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded'> {formik.errors.email}</div>):('')}
                         </div>
-                        <div className='mb-4'>
-                            <input value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} type="password" name='password' placeholder='Password' className='w-full border-2 p-2 rounded' />
-                            {formik.errors.password && formik.touched.password ? (<div className='text-red-600 mt-1 font-semibold'>* {formik.errors.password}</div>):('')}
-                        </div>
+                        <div className='mb-2 relative'>
+                            <input value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} type={passType} name='password' placeholder='Password' className=' w-full border-2 p-2 rounded' />
+                            <button type="button" onClick={handelPassword} className='absolute top-1/2 right-2 -translate-y-1/2'>
+        {passType === "password" ? <FaEye className='text-gray-500' /> : <FaEyeSlash  className='text-gray-500'/>}
+      </button>
+                         </div>
+             {formik.errors.password && formik.touched.password ? (<div className='text-red-600 mt-1 font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded'> {formik.errors.password}</div>):('')}
+                        
 
-                        {errorMsg && <div className='text-red-600 mt-1 font-semibold'>* {errorMsg}</div>}
+                        {errorMsg && <div className='text-red-600 mt-1 font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded mb-2'> {errorMsg}</div>}
 
                         <div className='md:flex justify-between mb-4 ml-auto w-fit'>
                             
-                            <div className='text-sm cursor-pointer' onClick={handleShowForgetPass}>Forget password?</div>
+                            <div className='text-sm cursor-pointer mt-2' onClick={handleShowForgetPass}>Forget password?</div>
                         </div>
 
                         <div>
