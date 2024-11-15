@@ -1,10 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import bankReducer from "./slices/bankSlice";
 import ProductsReducer from "./slices/productsSlice";
+import categoriesSlice from "./slices/categoriesSlice";
+import subcategoriesSlice from "./slices/subcategoriesForEachCategory";
 import whishListSlice from "./slices/Wishlist";
 export const store = configureStore({
   reducer: {
     products: ProductsReducer,
-    whishListSlice
+    categories: categoriesSlice,
+    subcategories: subcategoriesSlice,
+   
   },
 });

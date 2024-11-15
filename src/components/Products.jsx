@@ -4,6 +4,8 @@ import { CiHeart } from "react-icons/ci";
 import { FaCartPlus } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import LazyImage from "../utilities/LazyImage";
+import LoadingSpinner from "../utilities/LoadingSpinner";
 function Products() {
   let products = [
     {
@@ -117,7 +119,7 @@ function Products() {
       {products.map((product , index) => (
         <div key={index} className="product">
           <div className="image-container relative">
-            <img src={product.img} alt="" className="rounded-lg" />
+            <LazyImage src={product.img} alt="" className="rounded-lg" loader={<div className='w-full h-[397px] bg-gray-300 flex items-center justify-center'><LoadingSpinner /></div>} />
             <div className="icon-container flex gap-2">
               <Link to="/cart">
                 <FaCartPlus />

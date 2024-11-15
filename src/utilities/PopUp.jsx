@@ -4,54 +4,22 @@ import { Img } from "react-image";
 import LoadingSpinner from "./LoadingSpinner";
 import { IoMailOutline } from "react-icons/io5";
 
-const Popup = () => {
-    const [showPopup, setShowPopup] = useState(false);
-    const [isVisible, setIsVisible] = useState(false);
-    const popupRef = useRef(null);
-    const closePopup = () => {
-        setShowPopup(false);
-        setTimeout(() => setShowPopup(false), 100);
-    };
-
-    useEffect(() => { 
-        const handleClick = (event) => {
-            if (popupRef.current &&!popupRef.current.contains(event.target)) {
-                closePopup();
-            }
-        }
-        document.body.addEventListener('click', handleClick)
-
-        return () => document.body.removeEventListener('click', handleClick);
-    }, [])
+const Popup = ({closePopup}) => {
 
     useEffect(() => {
-        const image = '/popup.png'
+        const image = '/popup.webp'
         const img = new Image();
         img.src = image;
     }, []);
 
-    // Show popup after 10 seconds
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setShowPopup(true);
-            setTimeout(() => setIsVisible(true), 100);
-        }, 5000);
-
-        return () => clearTimeout(timer);
-    }, []);
-
-    
-
-    if (!showPopup) return null;
-
     return (
         <>
-            <div ref={popupRef} className="fixed inset-0 w-[90%] sm:w-[80%] md:w-3/4 min-[1150px]:w-1/2 top-1/2 left-1/2  -translate-x-1/2 -translate-y-[calc(50%-37px)] flex justify-center items-center  z-[100]">
-                <div className={`bg-[#f8f8f8] rounded-lg shadow-lg overflow-hidden w-full  mx-auto flex transition-transform duration-300 transform ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"} `}>
+            <div  className="fixed inset-0 w-[90%] sm:w-[80%] md:w-3/4 min-[1150px]:w-1/2 top-1/2 left-1/2  -translate-x-1/2 -translate-y-[calc(50%-37px)] flex justify-center items-center  z-[100]">
+                <div className={`bg-[#f8f8f8] rounded-lg shadow-lg overflow-hidden w-full  mx-auto flex transition-transform duration-300 transform  `}>
                     {/*Image */}
                     <div className="hidden sm:block md:w-1/2 w-full h-[430px] lg:h-[500px]">
                         <Img
-                            src='/popup.png'
+                            src='/popup.webp'
                             loader={<div className="min-h-full flex items-center justify-center bg-[#ddd]"><LoadingSpinner /></div>}
                             alt="Popup"
                             className="w-full h-full object-cover hidden sm:block"
@@ -74,7 +42,7 @@ const Popup = () => {
                     </div>
                 </div>
             </div>
-            <div className="fixed top-[74px] h-[calc(100%-74px)] bg-black/30 w-full z-[90]" />
+            <div onClick={closePopup} className="fixed top-0 left-0 h-[100%] bg-black/30 w-full z-[90]" />
         </>
     );
 };

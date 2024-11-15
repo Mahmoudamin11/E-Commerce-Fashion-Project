@@ -1,19 +1,23 @@
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { CiHeart } from "react-icons/ci";
 import { GoPerson } from "react-icons/go";
-import { IoIosMenu, IoIosSearch, IoIosHeartEmpty } from "react-icons/io";
-import { PiShoppingCart } from "react-icons/pi";
-import { Link, NavLink, useLocation } from "react-router-dom";
-import Search from "./Search";
-import Category from "./Category";
-import { VscMenu } from "react-icons/vsc";
-import PhoneMenu from "./PhoneMenu";
+import { IoIosSearch } from "react-icons/io";
+import { FiLogOut } from "react-icons/fi"
 import { MdClose } from "react-icons/md";
+import { PiShoppingCart } from "react-icons/pi";
+import { VscMenu } from "react-icons/vsc";
+import { useDispatch } from "react-redux";
+import { NavLink, useLocation } from "react-router-dom";
+import Login from "../Auth/login/Login";
+import { fetchCategories } from "../Redux Toolkit/slices/categoriesSlice";
+import { fetchAllSubcategories } from "../Redux Toolkit/slices/subcategoriesForEachCategory";
+import Category from "./CategoryNav";
+import PhoneMenu from "./PhoneMenu";
+import Search from "./Search";
 import Logo from "../assets/icons/logo.png";
-import Login from '../Auth/login/Login';
-import Cookies from 'js-cookie';
-import { FiLogOut } from "react-icons/fi";
-const Navbar = () => {
+import Cookies from "js-cookie";
+
+const Navbar = memo(() => {
   const [showLogin, setShowLogin] = useState(false);
 
   const token = Cookies.get('token');
@@ -25,6 +29,7 @@ const Navbar = () => {
   const [showCategory, setShowCategory] = useState(false);
   const [showPhoneMenu, setShowPhoneMenu] = useState(false);
   const [shownMenuMark, setShownMenuMark] = useState(false); // the mark that will be shown ( X || menu bar )
+  const [isScreenSmall, setIsScreenSmall] = useState(false);
   const location = useLocation();
 
   const toggleShowSearch = () => {
@@ -49,18 +54,37 @@ const Navbar = () => {
         categoryDivRef.current &&
         !categoryDivRef.current.contains(event.target)
       ) {
-        setShowCategory(false); // close category
+        setShowCategory(false);
       } else if (
         categoryBtnRef.current &&
         categoryBtnRef.current.target === event.target
       ) {
-        setShowCategory(!showCategory);
+        setShowCategory((prevState) => !prevState);
       }
     };
-    document.body.addEventListener("click", handleClick);
 
-    return () => document.body.removeEventListener("click", handleClick);
+    document.body.addEventListener("click", handleClick);
+    return () => {
+      document.body.removeEventListener("click", handleClick);
+    };
+  }, [setShowCategory, categoryBtnRef, categoryDivRef]);
+
+  useEffect(() => {
+    const checkScreenSize = () => setIsScreenSmall(window.innerWidth >= 640);
+    checkScreenSize();
+
+    window.addEventListener("resize", checkScreenSize);
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+    };
   }, []);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchCategories())
+      .unwrap()
+      .then(() => dispatch(fetchAllSubcategories()));
+  }, [dispatch]);
 
   const toggleShowPhoneMenu = () => {
     setShowPhoneMenu(!showPhoneMenu);
@@ -74,30 +98,6 @@ const Navbar = () => {
     setShowCategory(!showCategory);
   };
 
-  const womensCategoryData = [
-    { title: "New", link: "/womensNew", id: 1 },
-    { title: "Dresses", link: "/womensDresses", id: 2 },
-    { title: "Shirts & Blouses", link: "/womensShirts&Blouses", id: 3 },
-    { title: "Trousers", link: "/womensTrousers", id: 4 },
-    { title: "Jackets & Coats", link: "/womensJackets&Coats", id: 5 },
-    { title: "Shoes", link: "/womensShoes", id: 6 },
-    { title: "Accessories", link: "/womensAccessories", id: 7 },
-  ];
-  const mensCategoryData = [
-    { title: "New", link: "/mensNew", id: 1 },
-    { title: "T-shirts & Tanks", link: "/mensT-shirts&Tanks", id: 2 },
-    { title: "Trousers", link: "/mensTrousers", id: 3 },
-    { title: "Jackets & Coats", link: "/mensJackets&Coats", id: 4 },
-    { title: "Shoes", link: "/mensShoes", id: 5 },
-    { title: "Accessories", link: "/mensAccessories", id: 6 },
-  ];
-  const childrenCategoryData = [
-    { title: "New", link: "/childrenNew", id: 1 },
-    { title: "Clothing", link: "/childrenClothing", id: 2 },
-    { title: "Shoes", link: "/childrenShoes", id: 3 },
-    { title: "Accessories", link: "/childrenAccessories", id: 4 },
-  ];
-
   return (
     <>
       <div className="flex sticky top-0 shadow-sm  z-[100] bg-[#F8F8F8] items-center w-full px-6 py-2 md:px-10 md:py-[20px] h-[74px] md:h-[74px] justify-between">
@@ -105,7 +105,6 @@ const Navbar = () => {
           <Search toggleShowSearch={toggleShowSearch} />
         ) : (
           <>
-            {/* Logo */}
             <NavLink
               to={"/"}
               className="font-bold relative text-2xl cursor-pointer"
@@ -221,25 +220,23 @@ const Navbar = () => {
           </>
         )}
       </div>
+
       <div ref={categoryDivRef} className="hidden sm:block">
-        <Category
-          showCategory={showCategory}
-          toggleShowCategory={toggleShowCategory}
-          womens={womensCategoryData}
-          mens={mensCategoryData}
-          children={childrenCategoryData}
-        />
+        {isScreenSmall && (
+          <Category
+            showCategory={showCategory}
+            toggleShowCategory={toggleShowCategory}
+          />
+        )}
       </div>
 
-      <PhoneMenu
-        showPhoneMenu={showPhoneMenu}
-        toggleShowPhoneMenu={toggleShowPhoneMenu}
-        womens={womensCategoryData}
-        mens={mensCategoryData}
-        children={childrenCategoryData}
-      />
+      {!isScreenSmall && (
+        <PhoneMenu
+          showPhoneMenu={showPhoneMenu}
+          toggleShowPhoneMenu={toggleShowPhoneMenu}
+        />
+      )}
     </>
   );
-};
-
+});
 export default Navbar;
