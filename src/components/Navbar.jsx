@@ -13,6 +13,7 @@ import { fetchAllSubcategories } from "../Redux Toolkit/slices/subcategoriesForE
 import Category from "./CategoryNav";
 import PhoneMenu from "./PhoneMenu";
 import Search from "./Search";
+import Logo from "../assets/icons/logo.png";
 
 const Navbar = memo(() => {
   const [showLogin, setShowLogin] = useState(false);
@@ -37,42 +38,44 @@ const Navbar = memo(() => {
   const categoryDivRef = useRef(null);
 
   useEffect(() => {
-      const handleClick = (event) => {
-          if (
-              categoryBtnRef.current &&
-              !categoryBtnRef.current.contains(event.target) &&
-              categoryDivRef.current &&
-              !categoryDivRef.current.contains(event.target)
-          ) {
-              setShowCategory(false);
-          } else if (categoryBtnRef.current &&
-        categoryBtnRef.current.target === event.target) {
-              setShowCategory((prevState) => !prevState);
-          }
-      };
+    const handleClick = (event) => {
+      if (
+        categoryBtnRef.current &&
+        !categoryBtnRef.current.contains(event.target) &&
+        categoryDivRef.current &&
+        !categoryDivRef.current.contains(event.target)
+      ) {
+        setShowCategory(false);
+      } else if (
+        categoryBtnRef.current &&
+        categoryBtnRef.current.target === event.target
+      ) {
+        setShowCategory((prevState) => !prevState);
+      }
+    };
 
-      document.body.addEventListener("click", handleClick);
-      return () => {
-          document.body.removeEventListener("click", handleClick);
-      };
+    document.body.addEventListener("click", handleClick);
+    return () => {
+      document.body.removeEventListener("click", handleClick);
+    };
   }, [setShowCategory, categoryBtnRef, categoryDivRef]);
 
   useEffect(() => {
-      const checkScreenSize = () => setIsScreenSmall(window.innerWidth >= 640);
-      checkScreenSize();
+    const checkScreenSize = () => setIsScreenSmall(window.innerWidth >= 640);
+    checkScreenSize();
 
-      window.addEventListener('resize', checkScreenSize);
-      return () => {
-          window.removeEventListener('resize', checkScreenSize);
-      };
-  }, []); 
+    window.addEventListener("resize", checkScreenSize);
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+    };
+  }, []);
 
   const dispatch = useDispatch();
-  useEffect(() => { 
+  useEffect(() => {
     dispatch(fetchCategories())
-        .unwrap()
-        .then(() => dispatch(fetchAllSubcategories()));
-  }, [dispatch])
+      .unwrap()
+      .then(() => dispatch(fetchAllSubcategories()));
+  }, [dispatch]);
 
   const toggleShowPhoneMenu = () => {
     setShowPhoneMenu(!showPhoneMenu);
@@ -85,7 +88,7 @@ const Navbar = memo(() => {
   const toggleShowCategory = () => {
     setShowCategory(!showCategory);
   };
-  
+
   return (
     <>
       <div className="flex sticky top-0 shadow-sm  z-[100] bg-[#F8F8F8] items-center w-full px-6 py-2 md:px-10 md:py-[20px] h-[74px] md:h-[74px] justify-between">
@@ -97,7 +100,7 @@ const Navbar = memo(() => {
               to={"/"}
               className="font-bold relative text-2xl cursor-pointer"
             >
-              Logo
+              <img src={Logo} className="w-[60px]" alt="" />
             </NavLink>
             <ul className="hidden md:flex gap-6 items-center">
               <NavLink
@@ -211,17 +214,20 @@ const Navbar = memo(() => {
       </div>
 
       <div ref={categoryDivRef} className="hidden sm:block">
-        {isScreenSmall && <Category
-          showCategory={showCategory}
-          toggleShowCategory={toggleShowCategory}
-        />}
+        {isScreenSmall && (
+          <Category
+            showCategory={showCategory}
+            toggleShowCategory={toggleShowCategory}
+          />
+        )}
       </div>
 
-      {!isScreenSmall && <PhoneMenu
-        showPhoneMenu={showPhoneMenu}
-        toggleShowPhoneMenu={toggleShowPhoneMenu}
-      />}
-
+      {!isScreenSmall && (
+        <PhoneMenu
+          showPhoneMenu={showPhoneMenu}
+          toggleShowPhoneMenu={toggleShowPhoneMenu}
+        />
+      )}
     </>
   );
 });
