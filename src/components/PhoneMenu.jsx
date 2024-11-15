@@ -1,16 +1,32 @@
-import { memo, useEffect, useState } from 'react'
+import { memo, useEffect, useLayoutEffect, useState } from 'react'
 import { CiHeart } from 'react-icons/ci'
 import { GoPerson } from 'react-icons/go'
 import { PiShoppingCart } from 'react-icons/pi'
-import {  NavLink } from 'react-router-dom'
+
 import { FaAngleDown } from "react-icons/fa6";
 
-const PhoneMenu = memo(({showPhoneMenu, toggleShowPhoneMenu , womens, mens, children}) => {
+import { useSelector } from 'react-redux'
+import { NavLink } from 'react-router-dom'
+import LoadingSpinner from '../utilities/LoadingSpinner'
+
+
+const PhoneMenu = memo(({showPhoneMenu, toggleShowPhoneMenu}) => {
     
     const [showCategory, setShowCategory] = useState(false)
+
     const [showWomens, setShowWomens] = useState(false)
     const [showMens, setShowMens] = useState(false)
     const [showChildren, setShowChildren] = useState(false);
+
+    const [categoryHeight, setCategoryHeight] = useState(0)
+    const {allSubcategories, status, error} = useSelector((state) => state.subcategories);
+    const [categoriesState, setCategoriesState] = useState([]);    
+    useLayoutEffect(() => {
+            if (status === 'succeeded') {
+                setCategoriesState(Object.keys(allSubcategories).map(() => false));
+            }
+    }, [status, allSubcategories]);
+
 
     useEffect(() => {
         // Disable page scroll when PhoneMenu is open
@@ -33,27 +49,31 @@ const PhoneMenu = memo(({showPhoneMenu, toggleShowPhoneMenu , womens, mens, chil
         }
     }, [showPhoneMenu]);
 
-
-
+    useLayoutEffect(() => {
+        if (status === 'succeeded' && showCategory) {
+            let newHeight = (Object.keys(allSubcategories).length * 28) + ((Object.keys(allSubcategories).length - 1) * 8);
+            Object.entries(allSubcategories).forEach(([_, category], index) => {
+                if (categoriesState[index]) {
+                    newHeight += (category.subcategories.length * 24) + (category.subcategories.length - 1) * 4;
+                }
+            });
+            setCategoryHeight(newHeight);
+        } else {
+            setCategoryHeight(0);
+        }
+    }, [showCategory, categoriesState, allSubcategories, status]);
+    
     const toggleShowCatgeroy = () => { 
         setShowCategory(prev => !prev);
     }
-    const toggleShowWomens = () => { 
-        setShowWomens(prev => !prev);
-        setShowMens(false);
-        setShowChildren(false);
-    }
-    const toggleShowMens = () => { 
-        setShowMens(prev => !prev);
-        setShowWomens(false);
-        setShowChildren(false);
-    }
-    const toggleShowChildren = () => { 
-        setShowChildren(prev => !prev);
-        setShowMens(false);
-        setShowWomens(false);
-    }
 
+    const toggleCategoryState = (index) => {
+        setCategoriesState(prevState => {
+        const newState = prevState.map((state, idx) => idx === index ? !state : false); // Toggle only the clicked category
+        return newState;
+        });
+    };
+    
     return (
         <div className={`trans flex overflow-auto flex-col gap-16 fixed top-[74px] py-10 px-6 z-[100] bg-gray-200 ${showPhoneMenu ? "left-0" : "left-[200%]"} w-full flex flex-col items-center h-[calc(100vh-74px)] `}>
             <ul className="flex gap-8 sm:hidden items-center">
@@ -63,71 +83,42 @@ const PhoneMenu = memo(({showPhoneMenu, toggleShowPhoneMenu , womens, mens, chil
             </ul>
             <ul className='flex flex-col gap-6 w-full'>
                 <NavLink onClick={toggleShowPhoneMenu} to={'/'} className={({isActive}) => ` ${isActive && !showCategory&& !showCategory ? 'font-bold' : 'font-normal text-gray-700 hover:text-black'} trans text-2xl  `}>Home</NavLink>
-                <div onClick={toggleShowCatgeroy} className={`flex group gap-2 items-center cursor-pointer`}>
+                <button onClick={toggleShowCatgeroy} className={`flex group gap-2 items-center cursor-pointer`}>
                     <button className={` text-left ${showCategory ? "text-black  font-bold" : "font-normal text-gray-700"} hover:text-black trans text-2xl`}>Category</button>
                     <FaAngleDown size={20} className={`mt-1 ${showCategory ? "rotate-180" : "rotate-0"} group-hover:text-black text-gray-700 trans`} />
-                </div>
-                {<div style={{transition: "height 0.3s ease"}} className={`relative ${!showCategory? "-z-10 h-0 -mt-7" : showWomens ? " z-50 h-[280px]" : showMens ? " z-50 h-[250px]" : showChildren ? " z-50 h-[200px]" : showCategory ? " z-50 h-[80px]"  : ""}  overflow-hidden`}>
-                    {
-                        showCategory && (
-                            <div className={`flex flex-col pl-2 gap-1 absolute trans top-0 left-0 w-full min-h-full ${!showCategory? "translate-y-[-120%] -z-10" : "translate-0 z-50"}`}>
-                                <div className='flex flex-col pl-5 gap-2'>
-                                    <button onClick={toggleShowWomens} className={`font-semibold -mt-2 text-lg flex ${showWomens ? "text-black" : "text-gray-600"} hover:text-black`}><span className="trans">Women's</span> <FaAngleDown size={16} className={`mt-2 ${showWomens ? "rotate-180" : "rotate-0"} trans ml-2`} /></button>
-                                    <div style={{transition: "height 0.3s ease"}} className={`relative ${!showWomens? "-z-10 h-0" : " z-50 h-[200px]"}  overflow-hidden`}>
-                                        {
-                                            showWomens &&
-                                            <ul className={`flex flex-col pl-2 gap-1 absolute trans top-0 left-0 w-full h-full ${!showWomens? "translate-y-[-120%] -z-10" : "translate-0 z-50"}`}>
-                                                {
-                                                    womens.map( link => (
-                                                        <NavLink onClick={toggleShowPhoneMenu} key={link.id} to={link.link} className={({isActive}) => `trans ${isActive ? "text-black" : "text-gray-500"}  w-full hover:text-black`}>
-                                                            {link.title}
-                                                        </NavLink>
-                                                    ))
-                                                }
-                                            </ul>
-                                        }
+                </button>
+                
+                {   status === 'succeeded' &&
+                    <div style={{transition: "height 0.3s ease", height: `${categoryHeight}px`}} className={` relative flex flex-col  trans ${!showCategory? "-z-10  -mt-7" : ` z-50 `}  overflow-hidden`}>
+                        {showCategory && 
+                            <div style={{transition: "height 0.3s ease", height: `${categoryHeight}px`}} className={`flex flex-col pl-2 gap-2 absolute trans top-0 left-0 w-full min-h-full ${!showCategory? "translate-y-[-120%] -z-10" : "translate-0 z-50"}`}>
+                                {Object.keys(allSubcategories).map((mainCategory, index) => (
+                                    <div key={mainCategory} >
+                                    <button onClick={() => toggleCategoryState(index)} className={`font-semibold -mt-2 text-lg flex ${categoriesState[index] ? "text-black" : "text-gray-600"} hover:text-black`}><span className='trans'>{allSubcategories[mainCategory].category}</span> <FaAngleDown size={16} className={`mt-2 trans ${categoriesState[index] ? "rotate-180" : "rotate-0"} ml-2`} /></button>
+                                    {categoriesState[index] && (
+                                        <div className='flex flex-col gap-1 mb-2 pl-2'>
+                                        {allSubcategories[mainCategory].subcategories.map(subcat => (
+                                            <NavLink onClick={toggleShowPhoneMenu} key={subcat._id} to={`${allSubcategories[mainCategory].slug}/${subcat._id}`} className={({isActive}) => `trans ${isActive ? "text-black" : "text-gray-500"}  w-full hover:text-black`}>
+                                                {subcat.name}
+                                            </NavLink>
+                                        ))}
+                                        </div>
+                                    )}
                                     </div>
-                                </div>
-                                {/* Mens */}
-                                <div className='flex flex-col pl-5 gap-2'>
-                                    <button onClick={toggleShowMens} className={`font-semibold -mt-2 text-lg flex ${showMens ? "text-black" : "text-gray-600"} hover:text-black`}><span className='trans'>Mens's</span> <FaAngleDown size={16} className={`mt-2 ${showMens ? "rotate-180" : "rotate-0"} ml-2 trans`} /></button>
-                                    <div style={{transition: "height 0.3s ease"}} className={`relative ${!showMens? "-z-10 h-0" : " z-50 h-[170px]"}  overflow-hidden`}>
-                                        {
-                                            showMens &&
-                                            <ul className={`flex flex-col pl-2 gap-1 absolute trans top-0 left-0 w-full ${!showMens? "translate-y-[-120%] -z-10" : "translate-0 z-50"}`}>
-                                                {
-                                                    mens.map( link => (
-                                                        <NavLink onClick={toggleShowPhoneMenu} key={link.id} to={link.link} className={({isActive}) => `trans ${isActive ? "text-black" : "text-gray-500"}  w-full hover:text-black`}>
-                                                            {link.title}
-                                                        </NavLink>
-                                                    ))
-                                                }
-                                            </ul>
-                                        }
-                                    </div>
-                                </div>
-                                {/* children */}
-                                <div className='flex flex-col pl-5 gap-2 '>
-                                    <button onClick={toggleShowChildren} className={`font-semibold -mt-2 text-lg flex ${showChildren ? "text-black" : "text-gray-600"} hover:text-black`}><span className='trans'>Children</span> <FaAngleDown size={16} className={`mt-2 trans ${showChildren ? "rotate-180" : "rotate-0"} ml-2`} /></button>
-                                    <div style={{transition: "height 0.3s ease"}} className={`relative ${!showChildren? "-z-10 h-0" : " z-50 h-[120px]"}  overflow-hidden`}>
-                                        {
-                                            showChildren &&
-                                            <ul className={`flex flex-col pl-2 gap-1 absolute trans top-0 left-0 w-full ${!showChildren? "translate-y-[-120%] -z-10" : "translate-0 z-50"}`}>
-                                                {
-                                                    children.map( link => (
-                                                        <NavLink onClick={toggleShowPhoneMenu} key={link.id} to={link.link} className={({isActive}) => `trans ${isActive ? "text-black" : "text-gray-500"}  w-full hover:text-black`}>
-                                                            {link.title}
-                                                        </NavLink>
-                                                    ))
-                                                }
-                                            </ul>
-                                        }
-                                    </div>
-                                </div>
+                                ))}
                             </div>
-                        )
-                    }
-                </div>}
+                        }
+                        
+                    </div>
+                }
+
+                {
+                    showCategory && status === "loading" && <div className='w-full flex items-center justify-center'><LoadingSpinner /></div>
+                }
+                {
+                    showCategory && status === "failed" && <div className='w-full flex items-center justify-center'>{error}</div>
+                }
+
                 <NavLink onClick={toggleShowPhoneMenu} to={'/aboutUs'} className={({isActive}) => ` ${isActive && !showCategory? 'font-bold' : 'font-normal text-gray-700 hover:text-black'} trans text-2xl  `}>About Us</NavLink>
                 <NavLink onClick={toggleShowPhoneMenu} to={'/contactUs'} className={({isActive}) => ` ${isActive && !showCategory? 'font-bold' : 'font-normal text-gray-700 hover:text-black'} trans text-2xl  `}>Contact Us</NavLink>
             </ul>

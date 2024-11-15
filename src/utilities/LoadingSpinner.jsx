@@ -1,7 +1,8 @@
 const LoadingSpinner = ({style}) => {
     return (
-        <img src="/loading-spinner.svg" className={`w-20 h-20 ${style}`} alt="" />
+        <img src="/loading-spinner2.svg" className={`w-10 h-10 ${style}`} alt="" />
     )
 }
 
 export default LoadingSpinner
+

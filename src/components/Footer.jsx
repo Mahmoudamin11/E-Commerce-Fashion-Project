@@ -1,5 +1,6 @@
+import { memo } from "react";
 import { Link } from "react-router-dom";
-function Footer() {
+const Footer = memo(() => {
   return (
     <div className="footer bg-[#F8F8F8] py-11  sm:py-16">
       <div className="container flex justify-between flex-wrap  max-sm:gap-8 max-sm:flex-col max-sm:items-center  sm:gap-10  lg:gap-8   ">
@@ -59,6 +60,6 @@ function Footer() {
       </div>
     </div>
   );
-}
+})
 
 export default Footer;
