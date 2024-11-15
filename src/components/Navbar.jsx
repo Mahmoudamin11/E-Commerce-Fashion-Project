@@ -5,7 +5,6 @@ import { IoIosSearch } from "react-icons/io";
 import { MdClose } from "react-icons/md";
 import { PiShoppingCart } from "react-icons/pi";
 import { VscMenu } from "react-icons/vsc";
-
 import { useDispatch } from "react-redux";
 import { NavLink, useLocation } from "react-router-dom";
 import Login from "../Pages/login/Login";
@@ -14,12 +13,7 @@ import { fetchAllSubcategories } from "../Redux Toolkit/slices/subcategoriesForE
 import Category from "./CategoryNav";
 import PhoneMenu from "./PhoneMenu";
 import Search from "./Search";
-
-
-import { MdClose } from "react-icons/md";
 import Logo from "../assets/icons/logo.png";
-import Login from '../Pages/login/Login'
-
 
 const Navbar = memo(() => {
   const [showLogin, setShowLogin] = useState(false);
@@ -44,42 +38,44 @@ const Navbar = memo(() => {
   const categoryDivRef = useRef(null);
 
   useEffect(() => {
-      const handleClick = (event) => {
-          if (
-              categoryBtnRef.current &&
-              !categoryBtnRef.current.contains(event.target) &&
-              categoryDivRef.current &&
-              !categoryDivRef.current.contains(event.target)
-          ) {
-              setShowCategory(false);
-          } else if (categoryBtnRef.current &&
-        categoryBtnRef.current.target === event.target) {
-              setShowCategory((prevState) => !prevState);
-          }
-      };
+    const handleClick = (event) => {
+      if (
+        categoryBtnRef.current &&
+        !categoryBtnRef.current.contains(event.target) &&
+        categoryDivRef.current &&
+        !categoryDivRef.current.contains(event.target)
+      ) {
+        setShowCategory(false);
+      } else if (
+        categoryBtnRef.current &&
+        categoryBtnRef.current.target === event.target
+      ) {
+        setShowCategory((prevState) => !prevState);
+      }
+    };
 
-      document.body.addEventListener("click", handleClick);
-      return () => {
-          document.body.removeEventListener("click", handleClick);
-      };
+    document.body.addEventListener("click", handleClick);
+    return () => {
+      document.body.removeEventListener("click", handleClick);
+    };
   }, [setShowCategory, categoryBtnRef, categoryDivRef]);
 
   useEffect(() => {
-      const checkScreenSize = () => setIsScreenSmall(window.innerWidth >= 640);
-      checkScreenSize();
+    const checkScreenSize = () => setIsScreenSmall(window.innerWidth >= 640);
+    checkScreenSize();
 
-      window.addEventListener('resize', checkScreenSize);
-      return () => {
-          window.removeEventListener('resize', checkScreenSize);
-      };
-  }, []); 
+    window.addEventListener("resize", checkScreenSize);
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+    };
+  }, []);
 
   const dispatch = useDispatch();
-  useEffect(() => { 
+  useEffect(() => {
     dispatch(fetchCategories())
-        .unwrap()
-        .then(() => dispatch(fetchAllSubcategories()));
-  }, [dispatch])
+      .unwrap()
+      .then(() => dispatch(fetchAllSubcategories()));
+  }, [dispatch]);
 
   const toggleShowPhoneMenu = () => {
     setShowPhoneMenu(!showPhoneMenu);
@@ -92,7 +88,7 @@ const Navbar = memo(() => {
   const toggleShowCategory = () => {
     setShowCategory(!showCategory);
   };
-  
+
   return (
     <>
       <div className="flex sticky top-0 shadow-sm  z-[100] bg-[#F8F8F8] items-center w-full px-6 py-2 md:px-10 md:py-[20px] h-[74px] md:h-[74px] justify-between">
@@ -100,7 +96,6 @@ const Navbar = memo(() => {
           <Search toggleShowSearch={toggleShowSearch} />
         ) : (
           <>
-            {/* Logo */}
             <NavLink
               to={"/"}
               className="font-bold relative text-2xl cursor-pointer"
@@ -219,17 +214,20 @@ const Navbar = memo(() => {
       </div>
 
       <div ref={categoryDivRef} className="hidden sm:block">
-        {isScreenSmall && <Category
-          showCategory={showCategory}
-          toggleShowCategory={toggleShowCategory}
-        />}
+        {isScreenSmall && (
+          <Category
+            showCategory={showCategory}
+            toggleShowCategory={toggleShowCategory}
+          />
+        )}
       </div>
 
-      {!isScreenSmall && <PhoneMenu
-        showPhoneMenu={showPhoneMenu}
-        toggleShowPhoneMenu={toggleShowPhoneMenu}
-      />}
-
+      {!isScreenSmall && (
+        <PhoneMenu
+          showPhoneMenu={showPhoneMenu}
+          toggleShowPhoneMenu={toggleShowPhoneMenu}
+        />
+      )}
     </>
   );
 });

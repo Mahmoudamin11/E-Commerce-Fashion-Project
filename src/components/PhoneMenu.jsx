@@ -1,15 +1,23 @@
 import { memo, useEffect, useLayoutEffect, useState } from 'react'
 import { CiHeart } from 'react-icons/ci'
-import { FaAngleDown } from "react-icons/fa6"
 import { GoPerson } from 'react-icons/go'
 import { PiShoppingCart } from 'react-icons/pi'
+
+import { FaAngleDown } from "react-icons/fa6";
+
 import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import LoadingSpinner from '../utilities/LoadingSpinner'
 
+
 const PhoneMenu = memo(({showPhoneMenu, toggleShowPhoneMenu}) => {
     
     const [showCategory, setShowCategory] = useState(false)
+
+    const [showWomens, setShowWomens] = useState(false)
+    const [showMens, setShowMens] = useState(false)
+    const [showChildren, setShowChildren] = useState(false);
+
     const [categoryHeight, setCategoryHeight] = useState(0)
     const {allSubcategories, status, error} = useSelector((state) => state.subcategories);
     const [categoriesState, setCategoriesState] = useState([]);    
@@ -18,6 +26,7 @@ const PhoneMenu = memo(({showPhoneMenu, toggleShowPhoneMenu}) => {
                 setCategoriesState(Object.keys(allSubcategories).map(() => false));
             }
     }, [status, allSubcategories]);
+
 
     useEffect(() => {
         // Disable page scroll when PhoneMenu is open
