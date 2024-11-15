@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+import AboutUS from "./Pages/About US/AboutUS";
 import Popup from "./utilities/PopUp";
 import React, { Suspense, useEffect, useState } from "react";
 import LoadingSpinner from "./utilities/LoadingSpinner";
@@ -13,6 +14,7 @@ const Payment = React.lazy(() => import("./Pages/Payment/Payment"));
 const Wishlist = React.lazy(() => import("./Pages/wishlist/Wishlist"));
 const NotFound = React.lazy(() => import("./Pages/NotFound"));
 const Category = React.lazy(() => import("./Pages/Cateogries/Category"));
+
 
 function App() {
   const [showPopup, setShowPopup] = useState(false);
@@ -38,6 +40,7 @@ function App() {
         <Route path="/cart/checkout" element={<Checkout />} />
         <Route path="/cart/checkout/payment" element={<Payment />} />
         <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/aboutUs" element={<AboutUS />} />
         {/* subcategory route */}
         <Route path="/:categoryName/:subcategoryID?" element={<Category />} />
       </Routes>
