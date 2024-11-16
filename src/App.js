@@ -6,6 +6,12 @@ import AboutUS from "./Pages/About US/AboutUS";
 import Popup from "./utilities/PopUp";
 import React, { Suspense, useEffect, useState } from "react";
 import LoadingSpinner from "./utilities/LoadingSpinner";
+import { Toaster } from "react-hot-toast";
+import ChangePassword from "./Auth/ChangePassword/ChangePassword"
+
+
+
+
 const Home = React.lazy(() => import("./Pages/Home"));
 const ContactUs = React.lazy(() => import("./Pages/ContactUs"));
 const Cart = React.lazy(() => import("./Pages/Cart/Cart"));
@@ -40,7 +46,9 @@ function App() {
         <Route path="/cart/checkout" element={<Checkout />} />
         <Route path="/cart/checkout/payment" element={<Payment />} />
         <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="/aboutUs" element={<AboutUS />} />
+        <Route path="/changepassword" element={<ChangePassword />} />
+        
+
         {/* subcategory route */}
         <Route path="/:categoryName/:subcategoryID?" element={<Category />} />
       </Routes>
@@ -50,6 +58,7 @@ function App() {
 
   return (
     <div className="App">
+      <Toaster/>
       <Suspense
         fallback={
           <div className="w-full h-screen flex items-center justify-center">
