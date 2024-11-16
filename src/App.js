@@ -1,10 +1,8 @@
-import React, { Suspense, useEffect, useState } from "react";
+import { default as React, Suspense, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-import Popup from './utilities/PopUp';
-import React, { Suspense, useEffect, useState } from "react";
 import LoadingSpinner from "./utilities/LoadingSpinner";
 import Popup from './utilities/PopUp';
 const Home = React.lazy(() => import("./Pages/Home"));
@@ -15,6 +13,7 @@ const Payment = React.lazy(() => import("./Pages/Payment/Payment"));
 const Wishlist = React.lazy(() => import("./Pages/wishlist/Wishlist"));
 const NotFound = React.lazy(() => import("./Pages/NotFound"));
 const Category = React.lazy(() => import("./Pages/Cateogries/Category"));
+const AboutUS = React.lazy(() => import("./Pages/About US/AboutUS"));
 
 
 function App() {

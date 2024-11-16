@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { useFormik } from 'formik';
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { HiOutlineXMark } from 'react-icons/hi2';
-import * as yup from 'yup'
-import ResetCode from '../ResetCode/ResetCode'
+import * as yup from 'yup';
+import ResetCode from '../ResetCode/ResetCode';
 
 export default function ForgetPass() {
     const [visible, setVisible] = useState(true);
