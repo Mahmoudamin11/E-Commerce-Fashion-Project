@@ -1,10 +1,10 @@
+import React, { Suspense, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-import Popup from './utilities/PopUp';
-import React, { Suspense, useEffect, useState } from "react";
 import LoadingSpinner from "./utilities/LoadingSpinner";
+import Popup from './utilities/PopUp';
 const Home = React.lazy(() => import("./Pages/Home"));
 const ContactUs = React.lazy(() => import("./Pages/ContactUs"));
 const Cart = React.lazy(() => import("./Pages/Cart/Cart"));
@@ -37,8 +37,7 @@ function App() {
       <Route path="/cart/checkout" element={<Checkout />} />
       <Route path="/cart/checkout/payment" element={<Payment />} />
       <Route path="/wishlist" element={<Wishlist />} />
-      // subcategory route
-      <Route path="/:categoryName/:subcategoryID?" element={<Category />} />
+      <Route path="/:categoryName/:subcategoryID" element={<Category />} />
     </Routes>
   ), []);
 

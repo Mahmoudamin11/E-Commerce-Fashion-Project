@@ -31,8 +31,8 @@ export const API = {
   addSubcategory: `${BASE_URL}/subcategory/`,
   updateSubcategory: `${BASE_URL}/subcategory/`,
   deleteSubcategory: `${BASE_URL}/subcategory/`,
-  getSpecificSubcategory: `${BASE_URL}/subcategory/`,
-  // getAllSubcategoriesForSpecificCategory: `${BASE_URL}/category/671b969721701e59f131cfb2/subcategories/`,
+  getSpecificSubcategory: (subcategoryId) => `${BASE_URL}/subcategory/${subcategoryId}`,
+  getAllSubcategoriesForSpecificCategory: (categoryId) =>  `${BASE_URL}/category/${categoryId}/subcategories/`,
   /* ======= Orders ======= */
   showOrders: `${BASE_URL}/order/show`,
   createOrder: `${BASE_URL}/order/create`,

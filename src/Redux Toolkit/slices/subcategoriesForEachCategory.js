@@ -24,7 +24,7 @@ export const fetchAllSubcategories = createAsyncThunk(
                     limit:10,
                 }
             });
-            data[category.slug] = {category:category.name, slug:category.slug, subcategories: [...response.data.data] };
+            data[category.slug] = {_id: category._id, category:category.name, slug:category.slug, subcategories: [...response.data.data] };
         }
         return data;
     }
@@ -77,13 +77,4 @@ const subcategorySlice = createSlice({
 });
 
 export default subcategorySlice.reducer;
-
-
-/*
-    [
-        {"women's" : []},
-        {"men's" : []},
-        {"children" : []},
-    ]
-
-*/
+export const allSubcategories = (state) => state.subcategories.allSubcategories;

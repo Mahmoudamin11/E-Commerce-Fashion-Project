@@ -58,7 +58,7 @@ const Navbar = memo(() => {
   }, [setShowCategory, categoryBtnRef, categoryDivRef]);
 
   useEffect(() => {
-      const checkScreenSize = () => setIsScreenSmall(window.innerWidth >= 640);
+      const checkScreenSize = () => setIsScreenSmall(window.innerWidth >= 768);
       checkScreenSize();
 
       window.addEventListener('resize', checkScreenSize);
@@ -188,22 +188,26 @@ const Navbar = memo(() => {
                 className={`cursor-pointer sm:hidden`}
               />
               {!shownMenuMark && (
-                <VscMenu
-                  onClick={toggleShowPhoneMenu}
-                  size={22}
-                  className={`cursor-pointer trans ${
-                    showPhoneMenu ? "rotate-180 duration-700" : "rotate-0"
-                  }`}
-                />
+                <button onClick={toggleShowPhoneMenu}>
+                    <VscMenu
+                      
+                      size={22}
+                      className={`cursor-pointer trans ${
+                        showPhoneMenu ? "rotate-180 duration-700" : "rotate-0"
+                      }`}
+                    />
+                </button>
               )}
               {shownMenuMark && (
-                <MdClose
-                  onClick={toggleShowPhoneMenu}
-                  size={22}
-                  className={`cursor-pointer trans ${
-                    showPhoneMenu ? "rotate-0" : "-rotate-180 duration-700"
-                  }`}
-                />
+                <button onClick={toggleShowPhoneMenu}>
+                  <MdClose
+                    
+                    size={22}
+                    className={`cursor-pointer trans ${
+                      showPhoneMenu ? "rotate-0" : "-rotate-180 duration-700"
+                    }`}
+                  />
+                </button>
               )}
             </div>
           </>

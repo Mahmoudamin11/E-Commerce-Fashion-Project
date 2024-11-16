@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaAngleRight } from "react-icons/fa6";
+import { Img } from "react-image";
+import LoadingSpinner from "../utilities/LoadingSpinner";
 
 const HeroSlider = () => {
     
@@ -28,39 +30,42 @@ const HeroSlider = () => {
         }, 5000);
         return () => clearInterval(slideInterval);
     }, [currentSlide]);
-
+    // md:h-[480px] lg:h-[622px]
     return (
-        <div className="relative w-full md:h-[480px] lg:h-[622px] overflow-hidden">
+        <div className="relative w-full   overflow-hidden">
         {/* Slider Wrapper */}
         <div
-            className="flex transition-transform ease-in-out duration-1000"
+            className="flex transition-transform ease-in-out h-[calc(100vh-74px)] duration-1000"
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
         >
             {/* Render each image */}
             <div  className="w-full max-h-full flex-shrink-0 relative overflow-y-hidden">
-                <img
+                <Img
                     src={'/heroSlider/men.webp'}
                     alt={`Slide ${"image1"}`}
                     className={`h-full object-cover w-full`}
-                />
+                    loader={<div className="bg-gray-300 flex items-center justify-center w-full h-full"><LoadingSpinner /></div>}
+                    />
             </div>
             <div  className="w-full max-h-full flex-shrink-0 relative overflow-y-hidden">
-                <img
+                <Img
                     src={'/heroSlider/women.webp'}
                     alt={`Slide ${"image2"}`}
                     className={`h-full object-cover w-full`}
-                />
+                    loader={<div className="bg-gray-300 flex items-center justify-center w-full h-full"><LoadingSpinner /></div>}
+                    />
             </div>
             <div  className="w-full max-h-full flex-shrink-0 relative overflow-y-hidden">
-                <img
+                <Img
                     src={'/heroSlider/children.webp'}
                     alt={`Slide ${"image3"}`}
                     className={`h-full object-cover mx-auto`}
+                    loader={<div className="bg-gray-300 flex items-center justify-center w-full h-full"><LoadingSpinner /></div>}
                 />
             </div>
         </div>
-
-        <div className=" absolute flex flex-col justify-center items-center gap-8 top-0 left-0 bg-black/[33%] w-full h-full max-h-[680px] md:max-h-[622px] z-20">
+        {/* max-h-[680px] md:max-h-[622px] */}
+        <div className=" absolute flex flex-col justify-center items-center gap-8 top-0 left-0 bg-black/[33%] w-full h-full  z-20">
             <h1 className="font-bold text-white text-[50px] min-[550px]:text-[80px] leading-tight text-center ">Youthful <br /> Summer style</h1>
             <p className="text-white text-center text-[20px] min-[550px]:text-[24px]">Discover the hottest trends and must-have looks</p>
             <Link to={'#'} className="trans group bg-white rounded-md py-6 px-8 trans flex gap-1 items-center font-semibold">
