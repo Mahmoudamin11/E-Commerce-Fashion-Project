@@ -1,15 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaRegHeart } from 'react-icons/fa'
 import { IoIosArrowBack, IoIosArrowDown, IoIosArrowForward } from 'react-icons/io'
 import { Link } from 'react-router-dom'
 import Wishlistcard from '../../components/whishlistcard/Wishlistcard'
+import { useDispatch, useSelector } from 'react-redux'
+import { getUserWhishList } from '../../Redux Toolkit/slices/WishlistSlice'
+
 
 export default function Wishlist() {
-  const [data,setData]=useState(true)
+
+  const {isLoading ,isError,whishListItems} = useSelector((state) => state.wishListSlice)
+  const dispatch = useDispatch()
+  
+  useEffect(()=>{
+    dispatch(getUserWhishList())
+ },[dispatch])
+
 
     return <>
 
-{data ?  <section className='pb-8'>
+{Array.isArray(whishListItems) && whishListItems.length > 0 ?  <section className='pb-8'>
  <div className='w-[90%] m-auto'>
  <div className='border-b-2 pb-4 pt-4 flex justify-between items-center'>
  <h3 className='text-lg md:text-2xl  font-bold text-nowrap '>My Wishlist</h3>
@@ -17,17 +27,12 @@ export default function Wishlist() {
  </div>
 
  <div className='grid grid-cols-12 my-14 gap-4'>
-  <div className='col-span-12 md:col-span-6 lg:col-span-3'>
-    <div className='w-full h-auto'>
-      <Wishlistcard />
+  {whishListItems.map((item)=> (
+    <div className='col-span-12 md:col-span-6' >
+     <h2>products</h2>
     </div>
-  </div>
-
-  <div className='col-span-12 md:col-span-6 lg:col-span-3'>
-    <div className='w-full h-auto'>
-      <Wishlistcard />
-    </div>
-  </div>
+  ))
+}           
 </div>
 
 <div className='border-y-2 py-2'>

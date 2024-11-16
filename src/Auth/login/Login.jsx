@@ -71,6 +71,7 @@ export default function Login() {
         Cookies.set("token", token, { expires: 7 });
         
       setTimeout(() => {
+        window.location.reload();
         navigate("/")
         setIsLoginVisible(false)
       }, 3000);

@@ -6,7 +6,26 @@ import { FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import LazyImage from "../utilities/LazyImage";
 import LoadingSpinner from "../utilities/LoadingSpinner";
+import { addToWhishList } from "../Redux Toolkit/slices/WishlistSlice";
+import { useDispatch, useSelector } from "react-redux";
+
+import toast from "react-hot-toast";
+import Cookies from "js-cookie";
+
+
+
 function Products() {
+  const id = "671cd85a0c61779fcc6dd4f5"
+  const dispatch = useDispatch()
+  
+  const {isLoading ,isError} = useSelector((state) => state.wishListSlice)
+
+  const handelwhishToast = ()=>{
+    toast.error("please login frist")
+  }
+ const token = Cookies.get("token")
+ 
+
   let products = [
     {
       img: product,
@@ -124,9 +143,11 @@ function Products() {
               <Link to="/cart">
                 <FaCartPlus />
               </Link>
-              <Link to="/wishlist">
+              {token ? (<div onClick={()=>dispatch(addToWhishList(id))}>
                 <CiHeart />
-              </Link>
+              </div>): <div onClick={handelwhishToast}>
+                <CiHeart />
+              </div>}
               <Link to="/view">
                 <FaEye />
               </Link>
