@@ -2,21 +2,32 @@ import { memo, useEffect, useRef, useState } from "react";
 import { CiHeart } from "react-icons/ci";
 import { GoPerson } from "react-icons/go";
 import { IoIosSearch } from "react-icons/io";
+import { FiLogOut } from "react-icons/fi"
 import { MdClose } from "react-icons/md";
 import { PiShoppingCart } from "react-icons/pi";
 import { VscMenu } from "react-icons/vsc";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useLocation } from "react-router-dom";
-import Login from "../Pages/login/Login";
+import Login from "../Auth/login/Login";
 import { fetchCategories } from "../Redux Toolkit/slices/categoriesSlice";
 import { fetchAllSubcategories } from "../Redux Toolkit/slices/subcategoriesForEachCategory";
 import Category from "./CategoryNav";
 import PhoneMenu from "./PhoneMenu";
 import Search from "./Search";
 import Logo from "../assets/icons/logo.png";
+import Cookies from "js-cookie";
+
+
+
+
 
 const Navbar = memo(() => {
+   
+
+
   const [showLogin, setShowLogin] = useState(false);
+  
+  const token = Cookies.get('token');
 
   const toggelelogin = () => {
     setShowLogin(!showLogin);
@@ -34,6 +45,11 @@ const Navbar = memo(() => {
     setShownMenuMark(false);
   };
 
+
+    const logout = ()=>{
+      Cookies.remove('token')
+      window.location.reload()
+    }
   const categoryBtnRef = useRef(null);
   const categoryDivRef = useRef(null);
 
@@ -76,6 +92,8 @@ const Navbar = memo(() => {
       .unwrap()
       .then(() => dispatch(fetchAllSubcategories()));
   }, [dispatch]);
+
+  const {isLoading ,isError} = useSelector((state) => state.wishListSlice)
 
   const toggleShowPhoneMenu = () => {
     setShowPhoneMenu(!showPhoneMenu);
@@ -177,11 +195,17 @@ const Navbar = memo(() => {
                   } trans  `
                 }
               >
-                <CiHeart size={22} className="cursor-pointer" />
+                <CiHeart size={22} className="cursor-pointer"  />
               </NavLink>
-              <button type="button" onClick={toggelelogin}>
-                <GoPerson size={22} className="cursor-pointer" />
-              </button>
+              {token ? (
+  <div onClick={logout} >
+    <FiLogOut size={22} className="cursor-pointer" />
+  </div>
+) : (
+  <div onClick={toggelelogin} >
+    <GoPerson size={22} className="cursor-pointer" />
+  </div>
+)}              
               {showLogin && <Login />}
             </ul>
             <div className="flex gap-6 items-center  md:hidden">

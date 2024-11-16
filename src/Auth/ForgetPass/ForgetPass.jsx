@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { useFormik } from 'formik';
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { HiOutlineXMark } from 'react-icons/hi2';
-import * as yup from 'yup';
-import ResetCode from '../ResetCode/ResetCode';
+import * as yup from 'yup'
+import ResetCode from '../../Auth/ResetCode/ResetCode'
 
 export default function ForgetPass() {
     const [visible, setVisible] = useState(true);
@@ -69,7 +69,7 @@ const formik = useFormik({
    
    <div className='my-4'>
   <input onChange={formik.handleChange} value={formik.values.email} onBlur={formik.handleBlur} type="email" placeholder='Enter Your Email' name='email' className='w-full border-2 p-2 rounded'/>
-  {formik.errors.email && formik.touched.email ? (<div className='text-red-600 mt-1 font-semibold'>* {formik.errors.email}</div>):('')}
+  {formik.errors.email && formik.touched.email ? (<div className='text-red-600 mt-1 font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded'>* {formik.errors.email}</div>):('')}
   </div>
  
    <button type='submit'  className='bg-black text-white py-2 px-4 w-full mb-4 rounded'>Send</button>

@@ -5,6 +5,12 @@ import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import LoadingSpinner from "./utilities/LoadingSpinner";
 import Popup from './utilities/PopUp';
+import { Toaster } from "react-hot-toast";
+import ChangePassword from "./Auth/ChangePassword/ChangePassword"
+
+
+
+
 const Home = React.lazy(() => import("./Pages/Home"));
 const ContactUs = React.lazy(() => import("./Pages/ContactUs"));
 const Cart = React.lazy(() => import("./Pages/Cart/Cart"));
@@ -32,21 +38,23 @@ function App() {
 
   const RoutesMemoized = React.useMemo(() => (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/contactUs" element={<ContactUs />} />
-      <Route path="*" element={<NotFound />} />
-      <Route path="/cart" element={<Cart />} />
-      <Route path="/cart/checkout" element={<Checkout />} />
-      <Route path="/cart/checkout/payment" element={<Payment />} />
-      <Route path="/wishlist" element={<Wishlist />} />
-      <Route path="/aboutUs" element={<AboutUS />} />
+        <Route path="/aboutUs" element={<AboutUS />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/contactUs" element={<ContactUs />} />
+        <Route path="*" element={<NotFound />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/cart/checkout" element={<Checkout />} />
+        <Route path="/cart/checkout/payment" element={<Payment />} />
+        <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/changepassword" element={<ChangePassword />} />
         {/* subcategory route */}
-      <Route path="/:categoryName/:subcategoryID" element={<Category />} />
+        <Route path="/:categoryName/:subcategoryID" element={<Category />} />
     </Routes>
   ), []);
 
   return (
     <div className="App">
+      <Toaster/>
       <Suspense
         fallback={
           <div className="w-full h-screen flex items-center justify-center">

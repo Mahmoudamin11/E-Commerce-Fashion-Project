@@ -1,8 +1,35 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FaHeart } from 'react-icons/fa'
+import Cookies from "js-cookie";
+import axios from 'axios';
 
 
 export default function Wishlistcard() {
+ 
+
+
+  const id = "671cd85a0c61779fcc6dd4f5"
+
+  async function removeItemsFromWishlist({id}){
+    try{
+      let options = {
+        method: 'DELETE',
+        url: `https://ecommerce-dot-code.vercel.app/api/wishlist/${id}`,
+        headers: {
+          'Authorization': Cookies.get("token") ,
+        },
+      }
+       const {data} = await axios.request(options)
+        
+       
+    }catch(error){
+      console.log(error.message);
+      
+    }
+  }
+
+
+
   return <>
   <div>
     <div className='rounded-xl overflow-hidden relative'>
@@ -35,6 +62,7 @@ export default function Wishlistcard() {
   <img src='/heroSlider/men.png'
     alt='img' className='w-full  h-full' />
   </div>
+  <button onClick={()=>{removeItemsFromWishlist({id:id})}}>delete</button>
     </div>
   </div>
   </>
