@@ -1,4 +1,4 @@
-export const BASE_URL = `http://ecommerce-dot-code.vercel.app/api`;
+export const BASE_URL = `https://ecommerce-dot-code.vercel.app/api`;
 
 export const API = {
   /* ======= Authentication ======= */
@@ -7,6 +7,9 @@ export const API = {
   forgotPassword: `${BASE_URL}/auth/forgotPassword`,
   verifyResetCode: `${BASE_URL}/auth/verifyResetCode`,
   resetPassword: `${BASE_URL}/auth/resetPassword`,
+
+  /* ======= Contact Us ======= */
+  contactUs: `${BASE_URL}/contact`,
 
   /* ======= User ======= */
   showUsers: `${BASE_URL}/user/show`,
